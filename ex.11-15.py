@@ -1,4 +1,10 @@
+
+
+
+
 import sys
+
+input("what's your name?")
 
 script, user_name = sys.argv
 prompt = "> "
