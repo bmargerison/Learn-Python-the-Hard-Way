@@ -7,10 +7,177 @@ Door - the choices are player makes to enter certain rooms
 	door2 - 1 in 10 chance of picing correct door
 	door3 - where the player obtains the thing required for the final room
 	door4 - fake door
-	treasure room - the final room where teh player wins
+	treasure room - the final room where the player wins
 
+2. Extract key concpets and research them
+
+
+
+3. Create a class hierarchy and object map for the concepts
+Map
+	- next_scene
+	- opening_scene
+Engine
+	- play
+Scene
+	- enter
+	- death
+	- door1
+	- door2 
+	- door3 
+	- door4
+	- treasure room
+
+4. Code the classes and a test to run them
+
+5. Repeat and refine
 """
 
+
+class Room(object):
+
+	def enter(self):
+		pass
+
+class Motor(object):
+
+	def __init__(self, room_map):
+		self.room_map = room_map
+
+	def play(self):
+		current_room = self.room_map.first_room()
+
+		while True:
+			print("\n--------")
+			next_room_name = current_room.enter()
+			print(next_room_name, "a")
+			current_room = self.room_map.next_room(next_room_name)
+			print(current_room,"c")
+
+class Dead(Room):
+
+	def enter(self):
+		print("you ded")
+
+class Atrium(Room):
+
+	def enter(self):
+
+		print("\tLong Wina and the %s" %story_name)
+		print("You are Long Wina, an adventurer looking for treasure in the catacombs of Paris.")
+		print("You enter the network, where there are 5 doors.")
+		print("Which door do you choose?")
+		
+		try:
+			door = int(input("> "))
+
+			if door == 1:
+				print("You chose door 1.")
+				return 'Door1'
+			elif door == 2:
+				print("You chose door 2.")
+				return 'Door2'
+			elif door == 3:
+				print("You chose door 3.")
+				return 'Door3'
+			elif door == 4:
+				print("You chose door 4.")
+				return 'Door4'
+			else: 
+				print("That's not an option ya doofus.")
+				print("Please enter a number from 1 to 5.")
+				return 'Atrium'
+
+		except ValueError:
+			print("That's not an option ya doofus.")
+			print("Please enter a number from 1 to 5.")
+			return 'Atrium'
+
+class Door1(Room):
+
+	def enter(self):
+		print("whatsup")
+
+class Door2(Room):
+
+	def enter(self):
+		print("hello")
+
+class Door3(Room):
+
+	global story_name_obtained
+
+	def enter(self):
+		print("This is the moment you have been searching for your whole life.")
+		print("You see it sitting there behind a contraption:")
+		print("The magnificent and glorious, unmistakable ", story_name)
+		print("To release it, you must put your hand in one of three holes to pull a lever.")
+		print("Which is the correct hole?")
+
+		try:
+			hole = int(input("> "))
+
+			if story_name_obtained == False:
+
+				if hole == 1:
+					return 'Death'
+				elif hole == 2:
+					return 'Death'
+				elif hole == 3:
+					print("You pull the lever and release the ", story_name, "!")
+					print("But your journey is not over, and you must return to the orignal room to find the treasure.")
+					story_name_obtained = True
+					return 'Treasure_room'
+
+		except ValueError:
+			print("That's not an option ya doofus.")
+			print("Please enter a number from 1 to 3.")
+			return 'Door3'
+
+class Door4(Room):
+
+	def enter(self):
+		print("There isn't really a door 4, I was just kidding.")
+		print("Please choose again.")
+		return 'Atrium'
+
+class Treasure_room(Room):
+
+	def enter(self):
+		print("you win")
+
+
+class Map(object):
+
+	rooms = {
+		'Atrium': Atrium(),
+		'Door1': Door1(),
+		'Door2': Door2(),
+		'Door3': Door3(),
+		'Door4': Door4(),
+		'Treasure_room': Treasure_room(),
+		'Death': Dead(),
+	}
+
+	def __init__(self, beginning):
+		self.beginning = beginning
+
+	def next_room(self, room_name):
+		print(room_name, "b")
+		return(Map.rooms.get(room_name))
+
+	def first_room(self):
+		return self.next_room(self.beginning)
+
+story_name = "muppet"
+story_name_obtained = False
+a_map = Map('Atrium')
+a_game = Motor(a_map)
+a_game.play()
+
+
+
+"""
 from sys import argv
 
 script, story_name = argv
@@ -162,3 +329,4 @@ def dead(why):
 story_name_obtained = False
 
 start()
+"""
