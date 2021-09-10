@@ -33,11 +33,12 @@ Scene
 5. Repeat and refine
 """
 
+from sys import exit
 
 class Room(object):
 
 	def enter(self):
-		pass
+		exit(1)
 
 class Motor(object):
 
@@ -57,7 +58,16 @@ class Motor(object):
 class Dead(Room):
 
 	def enter(self):
-		print("you ded")
+		quips = [
+		"You died. You kinda suck at this.",
+		"Your mom would be proud... if she were smarter.",
+		"Such a luser",
+		"I have a small puppy that's better at this."
+		]
+
+	def enter(self):
+		print(Death.quips[randint(0,len(self.quips)-1)])
+		exit(1)
 
 class Atrium(Room):
 
@@ -96,12 +106,37 @@ class Atrium(Room):
 class Door1(Room):
 
 	def enter(self):
-		print("whatsup")
+		print("You thought you would be clever and pick each door in turn.\nUnfortunately the door leads to a gaping chasm.\nYou fall down the hole to your death.")
+		return 'Death'
 
 class Door2(Room):
 
 	def enter(self):
-		print("hello")
+		print("There are 10 doors lined up.")
+		print("9 of the doors are metal, and one of the doors is paper.")
+		print("You must run full pace at one of the doors in order to break it.")
+		print("Which door do you choose?")
+
+
+		door = int(input("> "))
+
+		if door > 11 or door <= 0:
+			print("That was not one of the options given, please choose again.")
+			return 'Door2'
+		elif door == 11:
+			print("Okay smarty pants, you found a magic number, you can proceed.")
+			return 'Treasure_room'
+		elif door == 3:
+			print("Phew, that was a paper door!")
+			print("You may proceed.")
+			return 'Treasure_room'
+		elif door <= 2 or door >= 4:
+			print("That was a metal door. You break your neck. Ouch.")
+			return 'Death'
+		else:
+			print("That was not one of the options given, please choose again.")
+			return 'Door2'
+
 
 class Door3(Room):
 
